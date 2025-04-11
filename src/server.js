@@ -9,17 +9,25 @@ const routes = require('./routes');
 connectDatabase();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({ origin: '*' }));
 app.use(express.json());
+app.set('trust proxy', true);
 
 // Apply rate limiting to all routes
 app.use(apiLimiter);
 
 // Routes
+app.get('/test', (req, res) => {
+  res.send('Welcome to the API!');
+});
+
 app.use('/api', routes);
 
 // Error handling middleware
 app.use(errorHandler);
+
+// module.exports = app;
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

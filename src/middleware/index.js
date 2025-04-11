@@ -19,6 +19,10 @@ class AuthenticationError extends Error {
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
+  keyGenerator: (req) => {
+    // Remove port number if present
+    return req.ip.replace(/:\d+$/, '');
+  },
   message: 'Too many requests from this IP, please try again later.'
 });
 
